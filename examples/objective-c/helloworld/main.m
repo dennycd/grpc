@@ -59,10 +59,12 @@ int main(int argc, char * argv[]) {
     options.transport = GRPCDefaultTransportImplList.core_insecure;
     options.userAgentPrefix = @"HelloWorld/1.0";
 
+    NSLog("requesting hello");
     [[client sayHelloWithMessage:request
                  responseHandler:[[HLWResponseHandler alloc] init]
                      callOptions:options] start];
       
+    NSLog("requesting hello again");
     [[client sayHelloAgainWithMessage:request
                         responseHandler:[[HLWResponseHandler alloc] init]
                             callOptions:options] start];
