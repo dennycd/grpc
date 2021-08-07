@@ -62,6 +62,10 @@ int main(int argc, char * argv[]) {
     [[client sayHelloWithMessage:request
                  responseHandler:[[HLWResponseHandler alloc] init]
                      callOptions:options] start];
+      
+    [[client sayHelloAgainWithMessage:request
+                        responseHandler:[[HLWResponseHandler alloc] init]
+                            callOptions:options] start];
 
     return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
   }
