@@ -27,6 +27,12 @@
 #import <RxLibrary/GRXWriteable.h>
 #import <RxLibrary/GRXWriter+Transformations.h>
 
+@interface GRPCStreamingProtoCall () <GRPCResponseHandler>
+
+@property(nonatomic, readonly) GRPCCallOptions *callOptions;
+
+@end
+
 @implementation GRPCUnaryResponseHandler {
   void (^_responseHandler)(id, NSError *);
   dispatch_queue_t _responseDispatchQueue;
@@ -100,25 +106,35 @@
 
 - (void)start {
   [_call start];
-  [_call receiveNextMessage];
   [_call writeMessage:_message];
-  [_call finish];
+
+  if (!_call.callOptions.flowControlEnabled) {
+    [_call finish];
+  }
 }
 
 - (void)cancel {
   [_call cancel];
 }
 
-@end
+-(void)finish {
+  [_call finish];
+}
 
-@interface GRPCStreamingProtoCall () <GRPCResponseHandler>
+#pragma mark - GRPCProtoCallFlowControllable
+
+- (void)receiveNextMessage {
+  [_call receiveNextMessage];
+}
+- (void)receiveNextMessages:(NSUInteger)numberOfMessages {
+  [_call receiveNextMessages:numberOfMessages];
+}
 
 @end
 
 @implementation GRPCStreamingProtoCall {
   GRPCRequestOptions *_requestOptions;
   id<GRPCProtoResponseHandler> _handler;
-  GRPCCallOptions *_callOptions;
   Class _responseClass;
 
   GRPCCall2 *_call;
@@ -226,6 +242,8 @@
   [copiedCall finish];
 }
 
+#pragma mark - GRPCProtoCallFlowControllable
+
 - (void)receiveNextMessage {
   [self receiveNextMessages:1];
 }
@@ -236,6 +254,8 @@
   }
   [copiedCall receiveNextMessages:numberOfMessages];
 }
+
+#pragma mark - GRPCResponseHandler
 
 - (void)didReceiveInitialMetadata:(NSDictionary *)initialMetadata {
   @synchronized(self) {
@@ -313,6 +333,8 @@
     }
   }
 }
+
+#pragma mark - GRPCDispatchable
 
 - (dispatch_queue_t)dispatchQueue {
   return _dispatchQueue;
