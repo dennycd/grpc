@@ -97,8 +97,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/**
+ * GRPCProtoCallFlowControllable defines the available interface methods to use when flow control
+ * is enabled. Calling these methods when flow control is disabled has no effect.
+ */
+@protocol GRPCProtoCallFlowControllable <NSObject>
+
+/**
+ * Tell gRPC to receive another message.
+ *
+ * This method should only be used when flow control is enabled. If flow control is enabled, gRPC
+ * will only receive additional messages after the user indicates so by using either
+ * receiveNextMessage: or receiveNextMessages: methods. If flow control is not enabled, messages
+ * will be automatically received after the previous one is delivered.
+ */
+- (void)receiveNextMessage;
+
+/**
+ * Tell gRPC to receive another N message.
+ *
+ * This method should only be used when flow control is enabled. If flow control is enabled, the
+ * messages received from the server are buffered in gRPC until the user want to receive the next
+ * message. If flow control is not enabled, messages will be automatically received after the
+ * previous one is delivered.
+ */
+- (void)receiveNextMessages:(NSUInteger)numberOfMessages;
+
+@end
+
 /** A unary-request RPC call with Protobuf. */
-@interface GRPCUnaryProtoCall : NSObject
+@interface GRPCUnaryProtoCall : NSObject <GRPCProtoCallFlowControllable>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -126,10 +154,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)cancel;
 
+/**
+ * Finish the RPC request and half-close the call. The server may still send messages and/or
+ * trailers to the client.
+ */
+- (void)finish;
+
 @end
 
 /** A client-streaming RPC call with Protobuf. */
-@interface GRPCStreamingProtoCall : NSObject
+@interface GRPCStreamingProtoCall : NSObject <GRPCProtoCallFlowControllable>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -167,26 +201,6 @@ NS_ASSUME_NONNULL_BEGIN
  * trailers to the client.
  */
 - (void)finish;
-
-/**
- * Tell gRPC to receive another message.
- *
- * This method should only be used when flow control is enabled. If flow control is enabled, gRPC
- * will only receive additional messages after the user indicates so by using either
- * receiveNextMessage: or receiveNextMessages: methods. If flow control is not enabled, messages
- * will be automatically received after the previous one is delivered.
- */
-- (void)receiveNextMessage;
-
-/**
- * Tell gRPC to receive another N message.
- *
- * This method should only be used when flow control is enabled. If flow control is enabled, the
- * messages received from the server are buffered in gRPC until the user want to receive the next
- * message. If flow control is not enabled, messages will be automatically received after the
- * previous one is delivered.
- */
-- (void)receiveNextMessages:(NSUInteger)numberOfMessages;
 
 @end
 
