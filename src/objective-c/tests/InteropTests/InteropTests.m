@@ -780,8 +780,9 @@ static dispatch_once_t initGlobalInterceptorFactory;
   XCTAssertNotNil([[self class] host]);
 
   __weak XCTestExpectation *expectTimeout =
-      [self expectationWithDescription:@"testUnaryRPCWithV2APIFlowControlNotReceivingMessage received timeout"];
-  
+      [self expectationWithDescription:
+                @"testUnaryRPCWithV2APIFlowControlNotReceivingMessage received timeout"];
+
   RMTSimpleRequest *request = [RMTSimpleRequest message];
   request.responseType = RMTPayloadType_Compressable;
   request.responseSize = 123;
@@ -797,14 +798,15 @@ static dispatch_once_t initGlobalInterceptorFactory;
 
   GRPCUnaryProtoCall *call = [_service
       unaryCallWithMessage:request
-           responseHandler:[[InteropTestsBlockCallbacks alloc] initWithInitialMetadataCallback:nil
-                               messageCallback:^(id message) {
-                                XCTFail("Not expected to receive message");
-                               }
-                               closeCallback:nil]
+           responseHandler:[[InteropTestsBlockCallbacks alloc]
+                               initWithInitialMetadataCallback:nil
+                                               messageCallback:^(id message) {
+                                                 XCTFail("Not expected to receive message");
+                                               }
+                                                 closeCallback:nil]
                callOptions:options];
   [call start];
-  XCTWaiterResult result = [XCTWaiter waitForExpectations:@[expectTimeout] timeout:5];
+  XCTWaiterResult result = [XCTWaiter waitForExpectations:@[ expectTimeout ] timeout:5];
   XCTAssertEqual(XCTWaiterResultTimedOut, result, @"Unexpected waiter result %@", @(result));
 }
 
@@ -1187,19 +1189,20 @@ static dispatch_once_t initGlobalInterceptorFactory;
 
 - (void)testPingPongUnaryRPCWithFlowControl {
   XCTAssertNotNil([[self class] host]);
-  __weak XCTestExpectation *expectation = [self expectationWithDescription:@"UnaryPingPongWithV2API"];
-    
-  NSNumber* requestSize = @321;
-  NSArray* responseSizes = @[@123, @234];
+  __weak XCTestExpectation *expectation =
+      [self expectationWithDescription:@"UnaryPingPongWithV2API"];
+
+  NSNumber *requestSize = @321;
+  NSArray *responseSizes = @[ @123, @234 ];
 
   RMTStreamingOutputCallRequest *request = [RMTStreamingOutputCallRequest message];
   request.payload.body = [NSMutableData dataWithLength:requestSize.unsignedIntegerValue];
-  for (NSNumber* responseSize in responseSizes){
+  for (NSNumber *responseSize in responseSizes) {
     RMTResponseParameters *parameters = [RMTResponseParameters message];
     parameters.size = responseSize.intValue;
     [request.responseParametersArray addObject:parameters];
   }
-  
+
   GRPCMutableCallOptions *options = [[GRPCMutableCallOptions alloc] init];
   // For backwards compatibility
   options.transportType = [[self class] transportType];
@@ -1207,16 +1210,18 @@ static dispatch_once_t initGlobalInterceptorFactory;
   options.PEMRootCertificates = [[self class] PEMRootCertificates];
   options.hostNameOverride = [[self class] hostNameOverride];
   options.flowControlEnabled = YES;
-  
+
   __block GRPCUnaryProtoCall *call = nil;
   __block int receivedMessageCount = 0;
-  
+
   id messageHandler = ^(id message) {
     NSLog(@"received message %@", @(receivedMessageCount));
-    XCTAssertLessThan(receivedMessageCount, responseSizes.count, "More than expected messages received");
-    id expected = [RMTStreamingOutputCallResponse messageWithPayloadSize:responseSizes[receivedMessageCount]];
+    XCTAssertLessThan(receivedMessageCount, responseSizes.count,
+                      "More than expected messages received");
+    id expected =
+        [RMTStreamingOutputCallResponse messageWithPayloadSize:responseSizes[receivedMessageCount]];
     XCTAssertEqualObjects(message, expected);
-    
+
     receivedMessageCount += 1;
     if (receivedMessageCount < responseSizes.count) {
       [call receiveNextMessage];
@@ -1229,16 +1234,16 @@ static dispatch_once_t initGlobalInterceptorFactory;
     XCTAssertNil(error, @"Finished with unexpected error: %@", error);
     [expectation fulfill];
   };
-  
-  InteropTestsBlockCallbacks *handler = [[InteropTestsBlockCallbacks alloc]
-                                         initWithInitialMetadataCallback:nil
-                                         messageCallback:messageHandler
-                                         closeCallback:closeHandler
-                                         writeMessageCallback:nil];
-  
+
+  InteropTestsBlockCallbacks *handler =
+      [[InteropTestsBlockCallbacks alloc] initWithInitialMetadataCallback:nil
+                                                          messageCallback:messageHandler
+                                                            closeCallback:closeHandler
+                                                     writeMessageCallback:nil];
+
   call = [_service streamingOutputCallWithMessage:request
-                                                      responseHandler:handler
-                                                          callOptions:options];
+                                  responseHandler:handler
+                                      callOptions:options];
   [call start];
   [call receiveNextMessage];
   [self waitForExpectationsWithTimeout:STREAMING_CALL_TEST_TIMEOUT handler:nil];
@@ -1246,7 +1251,8 @@ static dispatch_once_t initGlobalInterceptorFactory;
 
 - (void)testPingPongStreamingRPCWithFlowControl {
   XCTAssertNotNil([[self class] host]);
-  __weak XCTestExpectation *expectation = [self expectationWithDescription:@"StreamingPingPongWithV2API"];
+  __weak XCTestExpectation *expectation =
+      [self expectationWithDescription:@"StreamingPingPongWithV2API"];
 
   NSArray *requests = @[ @27182, @8, @1828, @45904 ];
   NSArray *responses = @[ @31415, @9, @2653, @58979 ];
