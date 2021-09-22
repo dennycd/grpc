@@ -223,9 +223,8 @@ class ObjectiveCGrpcGenerator : public grpc::protobuf::compiler::CodeGenerator {
       Write(context, file_name + ".pbrpc.h",
             file_header + SystemImport("Foundation/Foundation.h") + "\n" +
                 PreprocIfNot(kProtocolOnly, system_imports) + "\n" +
-                class_declarations + "\n" +
-                forward_declarations + "\n" + kNonNullBegin + "\n" +
-                ng_protocols + protocols + "\n" +
+                class_declarations + "\n" + forward_declarations + "\n" +
+                kNonNullBegin + "\n" + ng_protocols + protocols + "\n" +
                 PreprocIfNot(kProtocolOnly, interfaces) + "\n" + kNonNullEnd +
                 "\n");
     }
