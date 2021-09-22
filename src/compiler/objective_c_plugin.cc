@@ -132,8 +132,6 @@ class ObjectiveCGrpcGenerator : public grpc::protobuf::compiler::CodeGenerator {
     static const ::std::string kNonNullBegin = "NS_ASSUME_NONNULL_BEGIN\n";
     static const ::std::string kNonNullEnd = "NS_ASSUME_NONNULL_END\n";
     static const ::std::string kProtocolOnly = "GPB_GRPC_PROTOCOL_ONLY";
-    static const ::std::string kForwardDeclare =
-        "GPB_GRPC_FORWARD_DECLARE_MESSAGE_PROTO";
 
     ::std::string file_name =
         google::protobuf::compiler::objectivec::FilePath(file);
@@ -237,10 +235,8 @@ class ObjectiveCGrpcGenerator : public grpc::protobuf::compiler::CodeGenerator {
 
       Write(context, file_name + ".pbrpc.h",
             file_header + SystemImport("Foundation/Foundation.h") + "\n" +
-                PreprocIfNot(kForwardDeclare, imports) + "\n" +
                 PreprocIfNot(kProtocolOnly, system_imports) + "\n" +
                 class_declarations + "\n" +
-                PreprocIfNot(kForwardDeclare, class_imports) + "\n" +
                 forward_declarations + "\n" + kNonNullBegin + "\n" +
                 ng_protocols + protocols + "\n" +
                 PreprocIfNot(kProtocolOnly, interfaces) + "\n" + kNonNullEnd +
