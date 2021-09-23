@@ -7,12 +7,12 @@ GRPC_LOCAL_SRC = '../../..'
 
 def grpc_deps
   pod 'Protobuf', :path => "#{GRPC_LOCAL_SRC}/third_party/protobuf", :inhibit_warnings => true
-  
+
   pod '!ProtoCompiler',            :path => "#{GRPC_LOCAL_SRC}/src/objective-c"
   pod '!ProtoCompiler-gRPCPlugin', :path => "#{GRPC_LOCAL_SRC}/src/objective-c"
-  
+
   pod 'BoringSSL-GRPC',       :podspec => "#{GRPC_LOCAL_SRC}/src/objective-c", :inhibit_warnings => true
-  
+
   pod 'gRPC/InternalTesting',           :path => GRPC_LOCAL_SRC
   pod 'gRPC-Core',                      :path => GRPC_LOCAL_SRC, :inhibit_warnings => true
   pod 'gRPC-RxLibrary',                 :path => GRPC_LOCAL_SRC
@@ -103,7 +103,7 @@ post_install do |installer|
         # GPR_UNREACHABLE_CODE causes "Control may reach end of non-void
         # function" warning
         config.build_settings['GCC_WARN_ABOUT_RETURN_TYPE'] = 'NO'
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) COCOAPODS=1 GRPC_CRONET_WITH_PACKET_COALESCING=1 GRPC_CFSTREAM=1'
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) COCOAPODS=1 GRPC_CRONET_WITH_PACKET_COALESCING=1 GRPC_CFSTREAM=1 GRPC_CRONET_WITH_PACKET_COALESCING=1'
       end
     end
 
@@ -114,9 +114,9 @@ post_install do |installer|
     if /gRPC(-macOS|-iOS|-tvOS|\.|-[0-9a-f])/.match(target.name)
       target.build_configurations.each do |config|
         if config.name == 'Cronet'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) COCOAPODS=1 GRPC_COMPILE_WITH_CRONET=1 GRPC_TEST_OBJC=1'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) COCOAPODS=1 GRPC_COMPILE_WITH_CRONET=1 GRPC_TEST_OBJC=1 '
         elsif config.name == 'Test'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) COCOAPODS=1 GRPC_TEST_OBJC=1'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) COCOAPODS=1 GRPC_TEST_OBJC=1 GRPC_CRONET_WITH_PACKET_COALESCING=1'
         end
       end
     end

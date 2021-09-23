@@ -92,12 +92,12 @@ Pod::Spec.new do |s|
     # build.
     'USE_HEADERMAP' => 'NO',
     'ALWAYS_SEARCH_USER_PATHS' => 'NO',
-    'GCC_PREPROCESSOR_DEFINITIONS' => '"$(inherited)" "COCOAPODS=1"',
+    'GCC_PREPROCESSOR_DEFINITIONS' => '"$(inherited)" "COCOAPODS=1" "GRPC_USE_EVENT_ENGINE=1"',
     'CLANG_WARN_STRICT_PROTOTYPES' => 'NO',
   }
 
   s.default_subspecs = 'Interface', 'Implementation'
-  s.compiler_flags = '-DGRPC_ARES=0 -Wno-comma'
+  s.compiler_flags = '-Wno-comma'
   s.libraries = 'c++'
 
   # Like many other C libraries, gRPC-Core has its public headers under `include/<libname>/` and its
@@ -1461,7 +1461,52 @@ Pod::Spec.new do |s|
                       'third_party/upb/upb/upb.h',
                       'third_party/upb/upb/upb.hpp',
                       'third_party/upb/upb/upb_internal.h',
-                      'third_party/xxhash/xxhash.h'
+                      'third_party/xxhash/xxhash.h',
+
+
+                      "third_party/libuv/src/fs-poll.c",
+                      "third_party/libuv/src/heap-inl.h",
+                      "third_party/libuv/src/idna.c",
+                      "third_party/libuv/src/idna.h",
+                      "third_party/libuv/src/inet.c",
+                      "third_party/libuv/src/queue.h",
+                      "third_party/libuv/src/strscpy.c",
+                      "third_party/libuv/src/strscpy.h",
+                      "third_party/libuv/src/threadpool.c",
+                      "third_party/libuv/src/timer.c",
+                      "third_party/libuv/src/uv-data-getter-setters.c",
+                      "third_party/libuv/src/uv-common.c",
+                      "third_party/libuv/src/uv-common.h",
+                      "third_party/libuv/src/version.c",
+                      "third_party/libuv/src/unix/async.c",
+                      "third_party/libuv/src/unix/atomic-ops.h",
+                      "third_party/libuv/src/unix/core.c",
+                      "third_party/libuv/src/unix/dl.c",
+                      "third_party/libuv/src/unix/fs.c",
+                      "third_party/libuv/src/unix/getaddrinfo.c",
+                      "third_party/libuv/src/unix/getnameinfo.c",
+                      "third_party/libuv/src/unix/internal.h",
+                      "third_party/libuv/src/unix/loop.c",
+                      "third_party/libuv/src/unix/loop-watcher.c",
+                      "third_party/libuv/src/unix/pipe.c",
+                      "third_party/libuv/src/unix/poll.c",
+                      "third_party/libuv/src/unix/process.c",
+                      "third_party/libuv/src/unix/signal.c",
+                      "third_party/libuv/src/unix/spinlock.h",
+                      "third_party/libuv/src/unix/stream.c",
+                      "third_party/libuv/src/unix/tcp.c",
+                      "third_party/libuv/src/unix/thread.c",
+                      "third_party/libuv/src/unix/tty.c",
+                      "third_party/libuv/src/unix/udp.c",
+                      "third_party/libuv/src/unix/bsd-ifaddrs.c",
+                      "third_party/libuv/src/unix/darwin.c",
+                      "third_party/libuv/src/unix/fsevents.c",
+                      "third_party/libuv/src/unix/kqueue.c",
+                      "third_party/libuv/src/unix/darwin-proctitle.c",
+                      "third_party/libuv/src/unix/proctitle.c"
+
+
+
     ss.private_header_files = 'src/core/ext/filters/client_channel/backend_metric.h',
                               'src/core/ext/filters/client_channel/backup_poller.h',
                               'src/core/ext/filters/client_channel/client_channel.h',
@@ -2065,7 +2110,22 @@ Pod::Spec.new do |s|
                               'third_party/upb/upb/upb.h',
                               'third_party/upb/upb/upb.hpp',
                               'third_party/upb/upb/upb_internal.h',
-                              'third_party/xxhash/xxhash.h'
+                              'third_party/xxhash/xxhash.h',
+
+                              'third_party/libuv/include/uv.h',
+                              "third_party/libuv/include/uv/errno.h",
+                              "third_party/libuv/include/uv/threadpool.h",
+                              "third_party/libuv/include/uv/version.h",
+                              "third_party/libuv/include/uv/tree.h",
+                              "third_party/libuv/include/uv/unix.h",
+                              "third_party/libuv/src/unix/atomic-ops.h",
+                              "third_party/libuv/src/unix/internal.h",
+                              "third_party/libuv/src/unix/spinlock.h",
+                              "third_party/libuv/include/uv/darwin.h"
+
+
+
+
   end
 
   # CFStream is now default. Leaving this subspec only for compatibility purpose.
@@ -2284,5 +2344,14 @@ Pod::Spec.new do |s|
     find src/core/ -type f \\( -name '*.h' -or -name '*.cc' \\) -print0 | xargs -0 -L1 sed -E -i'.grpc_back' 's;#include "xxhash.h";#if COCOAPODS==1\\\n  #include  "third_party/xxhash/xxhash.h"\\\n#else\\\n  #include  "xxhash.h"\\\n#endif;g'
     find third_party/xxhash  -type f -name xxhash.h -print0 | xargs -0 -L1 sed -E -i'.grpc_back' 's;@param([^,]*),;@param\\1 ,;g'
     find src/core/ third_party/xxhash/ -type f -name '*.grpc_back' -print0 | xargs -0 rm
+
+    find third_party/libuv/ src/core -type f \\( -path '*.h' -or -path '*.cc' -or -path '*.c' \\) -print0 | xargs -0 -L1 sed -E -i'.grpc_back' 's;#include "uv.h";#if COCOAPODS==1\\\n  #include "third_party/libuv/include/uv.h"\\\n#else\\\n  #include  <uv.h>\\\n#endif;g'
+    find third_party/libuv/ src/core -type f \\( -path '*.h' -or -path '*.cc' -or -path '*.c' \\) -print0 | xargs -0 -L1 sed -E -i'.grpc_back' 's;#include <uv.h>;#if COCOAPODS==1\\\n  #include "third_party/libuv/include/uv.h"\\\n#else\\\n  #include  <uv.h>\\\n#endif;g'
+    find third_party/libuv/ src/core -type f \\( -path '*.h' -or -path '*.cc' -or -path '*.c' \\) -print0 | xargs -0 -L1 sed -E -i'.grpc_back' 's;#\s*include "uv/(.*)";#if COCOAPODS==1\\\n  #include "third_party/libuv/include/uv/\\1"\\\n#else\\\n  #include  "uv/\\1"\\\n#endif;g'
+    find third_party/libuv/ -type f \\( -path '*.h' -or -path '*.cc' -or -path '*.c' \\) -print0 | xargs -0 -L1 sed -E -i'.grpc_back' 's;#\s*include "uv-common.h";#if COCOAPODS==1\\\n  #include "third_party/libuv/src/uv-common.h"\\\n#else\\\n  #include  "uv-common.h"\\\n#endif;g'
+    find third_party/libuv/ -type f \\( -path '*.h' -or -path '*.cc' -or -path '*.c' \\) -print0 | xargs -0 -L1 sed -E -i'.grpc_back' 's;#\s*include "heap-inl.h";#if COCOAPODS==1\\\n  #include "third_party/libuv/src/heap-inl.h"\\\n#else\\\n  #include  "heap-inl.h"\\\n#endif;g'
+    find third_party/libuv/ -type f \\( -path '*.h' -or -path '*.cc' -or -path '*.c' \\) -print0 | xargs -0 -L1 sed -E -i'.grpc_back' 's;#\s*include "idna.h";#if COCOAPODS==1\\\n  #include "third_party/libuv/src/idna.h"\\\n#else\\\n  #include  "idna.h"\\\n#endif;g'
+    find third_party/libuv/ -type f \\( -path '*.h' -or -path '*.cc' -or -path '*.c' \\) -print0 | xargs -0 -L1 sed -E -i'.grpc_back' 's;#\s*include "atomic-ops.h";#if COCOAPODS==1\\\n  #include "third_party/libuv/src/atomic-ops.h"\\\n#else\\\n  #include  "atomic-ops.h"\\\n#endif;g'
+
   END_OF_COMMAND
 end

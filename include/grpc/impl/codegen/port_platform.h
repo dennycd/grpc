@@ -205,7 +205,7 @@
 #if TARGET_OS_IPHONE
 #define GPR_PLATFORM_STRING "ios"
 #define GPR_CPU_IPHONE 1
-#define GRPC_CFSTREAM 1
+//#define GRPC_CFSTREAM 1
 /* the c-ares resolver isn't safe to enable on iOS */
 #define GRPC_ARES 0
 #else /* TARGET_OS_IPHONE */
@@ -487,9 +487,9 @@ typedef unsigned __int64 uint64_t;
    power of two */
 #define GPR_MAX_ALIGNMENT 16
 
-#ifndef GRPC_ARES
-#define GRPC_ARES 1
-#endif
+//#ifndef GRPC_ARES && !defined(TARGET_OS_IPHONE)
+//#define GRPC_ARES 1
+//#endif
 
 #ifndef GRPC_IF_NAMETOINDEX
 #define GRPC_IF_NAMETOINDEX 1
@@ -677,10 +677,10 @@ typedef unsigned __int64 uint64_t;
 #undef GRPC_USE_EVENT_ENGINE
 #endif /* GRPC_USE_EVENT_ENGINE */
 
-#ifdef GRPC_USE_EVENT_ENGINE
-#undef GPR_SUPPORT_CHANNELS_FROM_FD
-#define GRPC_ARES 1
-#endif /* GRPC_USE_EVENT_ENGINE */
+//#ifdef GRPC_USE_EVENT_ENGINE && !defined(TARGET_OS_IPHONE)
+//#undef GPR_SUPPORT_CHANNELS_FROM_FD
+//#define GRPC_ARES 1
+//#endif /* GRPC_USE_EVENT_ENGINE */
 
 #define GRPC_CALLBACK_API_NONEXPERIMENTAL
 

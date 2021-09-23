@@ -26,14 +26,18 @@
 #include "src/core/lib/iomgr/port.h"
 
 #ifdef GRPC_UV
-#include <uv.h>
+#if COCOAPODS==1
+  #include "third_party/libuv/include/uv.h"
+#else
+  #include  <uv.h>
+#endif
 #endif
 
 #ifdef GRPC_WINSOCK_SOCKET
 #include <ws2tcpip.h>
 #endif
 
-#if defined(GRPC_POSIX_SOCKET) || defined(GRPC_CFSTREAM)
+#if defined(GRPC_POSIX_SOCKET) || defined(GRPC_CFSTREAM) || defined(TARGET_OS_IPHONE)
 #include <sys/socket.h>
 #endif
 
