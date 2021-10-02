@@ -23,6 +23,7 @@ target 'Sample' do
   pod 'Protobuf', :path => "#{GRPC_LOCAL_SRC}/third_party/protobuf"
 
   pod 'BoringSSL-GRPC', :podspec => "#{GRPC_LOCAL_SRC}/src/objective-c"
+  pod 'Libuv-gRPC', :podspec => "#{GRPC_LOCAL_SRC}/src/objective-c"
 
   pod 'gRPC', :path => GRPC_LOCAL_SRC
   pod 'gRPC-Core', :path => GRPC_LOCAL_SRC
@@ -47,5 +48,8 @@ pre_install do |installer|
     # build.
     'USE_HEADERMAP' => 'NO',
     'ALWAYS_SEARCH_USER_PATHS' => 'NO',
+
+    'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES',
   }
+
 end
