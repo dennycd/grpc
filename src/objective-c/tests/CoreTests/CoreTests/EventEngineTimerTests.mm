@@ -21,8 +21,8 @@
 #include <absl/functional/bind_front.h>
 #include <absl/time/time.h>
 
-#include <grpc/grpc.h>
 #include <grpc/event_engine/event_engine.h>
+#include <grpc/grpc.h>
 #include <grpc/test/core/util/test_config.h>
 
 #include "src/core/lib/event_engine/uv/libuv_event_engine.h"
@@ -109,7 +109,7 @@
     _engine = nullptr;
   }
   // The engine is deleted, and all closures should have been flushed beforehand
-  NSArray *expected = @[@(1), @(2)];
+  NSArray *expected = @[ @(1), @(2) ];
   XCTAssertEqualObjects(ordered, expected);
 }
 
