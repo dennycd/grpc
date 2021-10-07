@@ -51,6 +51,7 @@ Pod::Spec.new do |spec|
   DESC
 
   spec.homepage     = "https://libuv.org/"
+
   spec.license  = { :type => 'Mixed', :file => 'LICENSE' }
   spec.author    = "libuv"
 
