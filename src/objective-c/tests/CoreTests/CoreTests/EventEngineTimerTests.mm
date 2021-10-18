@@ -109,7 +109,7 @@
     _engine = nullptr;
   }
   // The engine is deleted, and all closures should have been flushed beforehand
-  NSArray *expected = @[@(1), @(2)];
+  NSArray *expected = @[ @(1), @(2) ];
   XCTAssertEqualObjects(ordered, expected);
 }
 
