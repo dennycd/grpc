@@ -194,4 +194,4 @@ typedef char* _Nonnull GRPCTransportID;
 @end
 
 /** gRPC metadata dictionary typedef */
-typedef NSDictionary<NSString *, id<NSCopying>> GRPCMetadataDictionary;
+typedef NSDictionary<NSString*, id<NSCopying>> GRPCMetadataDictionary;
