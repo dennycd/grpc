@@ -24,9 +24,7 @@
 #include <grpc/slice.h>
 #include <grpc/support/sync.h>
 
-extern "C" {
 #include <openssl/ssl.h>
-}
 
 #include "absl/base/thread_annotations.h"
 
