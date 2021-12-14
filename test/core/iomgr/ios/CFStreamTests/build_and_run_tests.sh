@@ -28,23 +28,23 @@ time ./build_tests.sh
 time xcodebuild \
     -workspace CFStreamTests.xcworkspace \
     -scheme CFStreamTests \
-    -destination name="iPhone 8" \
-    test | "${XCODEBUILD_FILTER_OUTPUT_SCRIPT}"
+    -destination name="iPhone 8"
+    # \ test | "${XCODEBUILD_FILTER_OUTPUT_SCRIPT}"
 
-time xcodebuild \
-    -workspace CFStreamTests.xcworkspace \
-    -scheme CFStreamTests_Asan \
-    -destination name="iPhone 8" \
-    test | "${XCODEBUILD_FILTER_OUTPUT_SCRIPT}"
+# time xcodebuild \
+#     -workspace CFStreamTests.xcworkspace \
+#     -scheme CFStreamTests_Asan \
+#     -destination name="iPhone 8" \
+#     test | "${XCODEBUILD_FILTER_OUTPUT_SCRIPT}"
 
-time xcodebuild \
-    -workspace CFStreamTests.xcworkspace \
-    -scheme CFStreamTests_Tsan \
-    -destination name="iPhone 8" \
-    test | "${XCODEBUILD_FILTER_OUTPUT_SCRIPT}"
+# time xcodebuild \
+#     -workspace CFStreamTests.xcworkspace \
+#     -scheme CFStreamTests_Tsan \
+#     -destination name="iPhone 8" \
+#     test | "${XCODEBUILD_FILTER_OUTPUT_SCRIPT}"
 
-time xcodebuild \
-    -workspace CFStreamTests.xcworkspace \
-    -scheme CFStreamTests_Msan \
-    -destination name="iPhone 8" \
-    test | "${XCODEBUILD_FILTER_OUTPUT_SCRIPT}"
+# time xcodebuild \
+#     -workspace CFStreamTests.xcworkspace \
+#     -scheme CFStreamTests_Msan \
+#     -destination name="iPhone 8" \
+#     test | "${XCODEBUILD_FILTER_OUTPUT_SCRIPT}"
