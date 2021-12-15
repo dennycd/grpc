@@ -23,9 +23,7 @@
 
 #include <grpc/slice.h>
 
-extern "C" {
 #include <openssl/ssl.h>
-}
 
 #include "src/core/lib/gprpp/ref_counted.h"
 
