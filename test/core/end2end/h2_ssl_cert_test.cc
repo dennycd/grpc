@@ -37,9 +37,7 @@
 #include "test/core/util/port.h"
 #include "test/core/util/test_config.h"
 
-extern "C" {
 #include <openssl/crypto.h>
-}
 
 static std::string test_server1_key_id;
 

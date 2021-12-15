@@ -35,11 +35,9 @@
 #include "test/core/tsi/transport_security_test_lib.h"
 #include "test/core/util/test_config.h"
 
-extern "C" {
 #include <openssl/crypto.h>
 #include <openssl/err.h>
 #include <openssl/pem.h>
-}
 
 #define SSL_TSI_TEST_ALPN1 "foo"
 #define SSL_TSI_TEST_ALPN2 "toto"
