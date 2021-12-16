@@ -34,6 +34,8 @@
 #include "src/core/lib/resource_quota/api.h"
 #include "test/core/util/test_config.h"
 
+static const uint8_t kIPv4[] = {127, 0, 0, 1};
+
 static gpr_mu g_mu;
 static int g_connections_complete = 0;
 static grpc_endpoint* g_connecting = nullptr;
@@ -89,6 +91,7 @@ static void must_fail(void* arg, grpc_error_handle error) {
   memset(&resolved_addr, 0, sizeof(resolved_addr));
   resolved_addr.len = sizeof(struct sockaddr_in);
   addr->sin_family = AF_INET;
+  memcpy(&addr->sin_addr.s_addr, kIPv4, sizeof(kIPv4));
 
   /* create a phony server */
   svr_fd = socket(AF_INET, SOCK_STREAM, 0);
