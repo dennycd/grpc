@@ -36,8 +36,7 @@
 #include "test/core/util/test_config.h"
 
 const uint8_t kIPv4[] = {127, 0, 0, 1};
-const uint8_t kIPv6Mapped[] = {0, 0, 0,    0,    0,   0, 0, 0,
-                           0, 0, 0xff, 0xff, 127, 0, 0, 1};
+const uint8_t kIPv6Mapped[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff, 127, 0, 0, 1};
 
 static gpr_mu g_mu;
 static int g_connections_complete = 0;
@@ -149,7 +148,7 @@ static sockaddr_in6 MakeAddr6(const uint8_t* addr, size_t addr_len) {
                reinterpret_cast<socklen_t*>(&socklen));
   } while (r == -1 && errno == EINTR);
   GPR_ASSERT(r >= 0);
-  
+
   NSLog(@"XXX: accepted client and closure...");
   close(r);
   close(svr_fd);
@@ -167,7 +166,7 @@ static sockaddr_in6 MakeAddr6(const uint8_t* addr, size_t addr_len) {
   XCTAssertGreaterThan(g_connections_complete, connections_complete_before);
 
   gpr_mu_unlock(&g_mu);
-  
+
   NSLog(@"XXX: all test done");
 }
 
