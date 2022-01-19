@@ -20,13 +20,13 @@
 #include <iostream>
 #include <map>
 
-#include <grpc/grpc_security.h>
-#include <grpc/slice.h>
-#include <grpc/support/sync.h>
-
 #include <openssl/ssl.h>
 
 #include "absl/base/thread_annotations.h"
+
+#include <grpc/grpc_security.h>
+#include <grpc/slice.h>
+#include <grpc/support/sync.h>
 
 #include "src/core/lib/gprpp/memory.h"
 #include "src/core/lib/gprpp/ref_counted.h"
