@@ -31,5 +31,4 @@
   XCTAssertNotNil(subject);
 }
 
-
 @end
