@@ -975,7 +975,6 @@ class ObjCLanguage(object):
     def test_specs(self):
         out = []
 
-
         # out.append(
         #     self.config.job_spec(
         #         ['src/objective-c/tests/build_one_example_bazel.sh'],
@@ -1021,8 +1020,6 @@ class ObjCLanguage(object):
         #             'FRAMEWORKS': 'NO'
         #         }))
 
-
-
         # out.append(
         #     self.config.job_spec(['src/objective-c/tests/run_plugin_tests.sh'],
         #                          timeout_seconds=60 * 60,
@@ -1037,7 +1034,6 @@ class ObjCLanguage(object):
         #         cpu_cost=1e6,
         #         environ=_FORCE_ENVIRON_FOR_WRAPPERS))
 
-
         # out.append(
         #     self.config.job_spec(
         #         ['test/core/iomgr/ios/CFStreamTests/build_and_run_tests.sh'],
@@ -1045,7 +1041,6 @@ class ObjCLanguage(object):
         #         shortname='ios-test-cfstream-tests',
         #         cpu_cost=1e6,
         #         environ=_FORCE_ENVIRON_FOR_WRAPPERS))
-
 
         # out.append(
         #     self.config.job_spec(
@@ -1056,14 +1051,12 @@ class ObjCLanguage(object):
         #         environ=_FORCE_ENVIRON_FOR_WRAPPERS))
         # # TODO: replace with run_one_test_bazel.sh when Bazel-Xcode is stable
 
-
         # out.append(
         #     self.config.job_spec(['src/objective-c/tests/run_one_test.sh'],
         #                          timeout_seconds=60 * 60,
         #                          shortname='ios-test-unittests',
         #                          cpu_cost=1e6,
         #                          environ={'SCHEME': 'UnitTests'}))
-
 
         # out.append(
         #     self.config.job_spec(['src/objective-c/tests/run_one_test.sh'],
@@ -1072,14 +1065,12 @@ class ObjCLanguage(object):
         #                          cpu_cost=1e6,
         #                          environ={'SCHEME': 'InteropTests'}))
 
-
         out.append(
             self.config.job_spec(['src/objective-c/tests/run_one_test.sh'],
                                  timeout_seconds=60 * 60,
                                  shortname='ios-test-cronettests',
                                  cpu_cost=1e6,
                                  environ={'SCHEME': 'CronetTests'}))
-
 
         # out.append(
         #     self.config.job_spec(['src/objective-c/tests/run_one_test.sh'],
@@ -1088,7 +1079,6 @@ class ObjCLanguage(object):
         #                          cpu_cost=1e6,
         #                          environ={'SCHEME': 'PerfTests'}))
 
-
         # out.append(
         #     self.config.job_spec(['src/objective-c/tests/run_one_test.sh'],
         #                          timeout_seconds=30 * 60,
@@ -1096,14 +1086,12 @@ class ObjCLanguage(object):
         #                          cpu_cost=1e6,
         #                          environ={'SCHEME': 'PerfTestsPosix'}))
 
-
         # out.append(
         #     self.config.job_spec(['test/cpp/ios/build_and_run_tests.sh'],
         #                          timeout_seconds=60 * 60,
         #                          shortname='ios-cpp-test-cronet',
         #                          cpu_cost=1e6,
         #                          environ=_FORCE_ENVIRON_FOR_WRAPPERS))
-
 
         # out.append(
         #     self.config.job_spec(['src/objective-c/tests/run_one_test.sh'],
@@ -1114,7 +1102,6 @@ class ObjCLanguage(object):
         #                              'SCHEME': 'MacTests',
         #                              'PLATFORM': 'macos'
         #                          }))
-
 
         # out.append(
         #     self.config.job_spec(['src/objective-c/tests/run_one_test.sh'],
