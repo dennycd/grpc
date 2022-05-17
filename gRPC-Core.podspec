@@ -195,7 +195,7 @@ Pod::Spec.new do |s|
     ss.dependency 'abseil/types/span', abseil_version
     ss.dependency 'abseil/types/variant', abseil_version
     ss.dependency 'abseil/utility/utility', abseil_version
-    ss.compiler_flags = '-DBORINGSSL_PREFIX=GRPC -Wno-unreachable-code -Wno-shorten-64-to-32'
+    ss.compiler_flags = '-DBORINGSSL_PREFIX=GRPC -Wno-unreachable-code -Wshorten-64-to-32'
 
     ss.source_files = 'src/core/ext/filters/census/grpc_context.cc',
                       'src/core/ext/filters/channel_idle/channel_idle_filter.cc',

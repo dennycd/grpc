@@ -67,7 +67,7 @@ Pod::Spec.new do |s|
   }
 
   s.libraries = 'c++'
-  s.compiler_flags = '-Wno-comma -Wno-unreachable-code -Wno-shorten-64-to-32'
+  s.compiler_flags = '-Wno-comma -Wno-unreachable-code -Wshorten-64-to-32'
 
   s.default_subspecs = 'Interface', 'Implementation'
 
