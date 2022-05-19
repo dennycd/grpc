@@ -20,6 +20,7 @@ load(
     "grpc_objc_testing_library",
     "local_objc_grpc_library",
     "proto_library_objc_wrapper",
+    "grpc_objc_ios_unit_test",
 )
 load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_bundle")
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application", "ios_unit_test")
@@ -188,10 +189,8 @@ grpc_objc_testing_library(
     hdrs = ["TestBase.h"],
 )
 
-ios_unit_test(
+grpc_objc_ios_unit_test(
     name = "UnitTests",
-    minimum_os_version = "9.0",
-    test_host = ":ios-host",
     deps = [
         ":APIv2Tests-lib",
         ":ChannelPoolTest-lib",
