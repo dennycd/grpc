@@ -17,6 +17,7 @@
 load("//bazel:grpc_build_system.bzl", "grpc_sh_test")
 load(
     "//src/objective-c:grpc_objc_internal_library.bzl",
+    "grpc_objc_ios_unit_test",
     "grpc_objc_testing_library",
     "local_objc_grpc_library",
     "proto_library_objc_wrapper",
@@ -64,8 +65,6 @@ grpc_objc_testing_library(
     data = [":TestCertificates"],
     defines = [
         "DEBUG=1",
-        "HOST_PORT_LOCALSSL=localhost:5051",
-        "HOST_PORT_LOCAL=localhost:5050",
         "HOST_PORT_REMOTE=grpc-test.sandbox.googleapis.com",
     ],
 )
@@ -188,10 +187,8 @@ grpc_objc_testing_library(
     hdrs = ["TestBase.h"],
 )
 
-ios_unit_test(
+grpc_objc_ios_unit_test(
     name = "UnitTests",
-    minimum_os_version = "9.0",
-    test_host = ":ios-host",
     deps = [
         ":APIv2Tests-lib",
         ":ChannelPoolTest-lib",

@@ -55,6 +55,18 @@ TEST_TARGETS=(
   //src/objective-c/tests:objc_codegen_plugin_option_test
 )
 
+# === BEGIN SECTION: run port server ====
+tools/run_tests/start_port_server.py
+
+[ -z "$(ps aux |egrep 'port_server\.py.*-p\s32766')" ] && {
+    echo >&2 "Can't find the port server. Start port server with tools/run_tests/start_port_server.py."
+    exit 1
+}
+
+PLAIN_PORT=$(curl localhost:32766/get)
+TLS_PORT=$(curl localhost:32766/get)
+# === END SECTION ===
+
 # === BEGIN SECTION: run interop_server on the background ====
 # Before testing objC at all, build the interop server since many of the ObjC test rely on it.
 # Use remote cache to build the interop_server binary as quickly as possible (interop_server
@@ -72,8 +84,8 @@ build_interop_server/bazel_wrapper \
 INTEROP_SERVER_BINARY=bazel-bin/test/cpp/interop/interop_server
 # run the interop server on the background. The port numbers must match TestConfigs in BUILD.
 # TODO(jtattermusch): can we make the ports configurable (but avoid breaking bazel build cache at the same time?)
-"${INTEROP_SERVER_BINARY}" --port=5050 --max_send_message_size=8388608 &
-"${INTEROP_SERVER_BINARY}" --port=5051 --max_send_message_size=8388608 --use_tls &
+"${INTEROP_SERVER_BINARY}" --port=$PLAIN_PORT --max_send_message_size=8388608 &
+"${INTEROP_SERVER_BINARY}" --port=$TLS_PORT --max_send_message_size=8388608 --use_tls &
 # make sure the interop_server processes we started on the background are killed upon exit.
 trap 'echo "KILLING interop_server binaries running on the background"; kill -9 $(jobs -p)' EXIT
 # === END SECTION: run interop_server on the background ====
@@ -87,6 +99,8 @@ python3 tools/run_tests/python_utils/bazel_report_helper.py --report_path objc_b
 objc_bazel_tests/bazel_wrapper \
   --bazelrc=tools/remote_build/include/test_locally_with_resultstore_results.bazelrc \
   test \
+  --test_env="HOST_PORT_LOCAL=localhost:${PLAIN_PORT}" \
+  --test_env="HOST_PORT_LOCALSSL=localhost:${TLS_PORT}" \
   --google_credentials="${KOKORO_GFILE_DIR}/GrpcTesting-d0eeee2db331.json" \
   "${BAZEL_REMOTE_CACHE_ARGS[@]}" \
   $BAZEL_FLAGS \
