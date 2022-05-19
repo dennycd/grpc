@@ -34,7 +34,7 @@ load(
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load(
     "@build_bazel_rules_apple//apple/testing/default_runner:ios_test_runner.bzl",
-    "ios_test_runner"
+    "ios_test_runner",
 )
 
 # The default device type for ios objc unit tests
@@ -46,8 +46,7 @@ IOS_UNIT_TEST_OS_VERSION = "15.2"
 def grpc_objc_ios_unit_test(
         name,
         deps,
-        env = {},
-):
+        env = {}):
     """ios unit test for running objc test suite on iOS simulator runner
 
     Args:
