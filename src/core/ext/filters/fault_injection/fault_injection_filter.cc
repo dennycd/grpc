@@ -119,9 +119,9 @@ absl::StatusOr<FaultInjectionFilter> FaultInjectionFilter::Create(
 }
 
 FaultInjectionFilter::FaultInjectionFilter(ChannelFilter::Args filter_args)
-    : index_((int)grpc_channel_stack_filter_instance_number(
+    : index_(static_cast<int>(grpc_channel_stack_filter_instance_number(
           filter_args.channel_stack(),
-          filter_args.uninitialized_channel_element())),
+          filter_args.uninitialized_channel_element()))),
       service_config_parser_index_(
           FaultInjectionServiceConfigParser::ParserIndex()) {}
 
