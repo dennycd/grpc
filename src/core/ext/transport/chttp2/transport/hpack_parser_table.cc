@@ -235,7 +235,8 @@ GPR_ATTRIBUTE_NOINLINE HPackTable::Memento MakeMemento(size_t i) {
   auto sm = kStaticTable[i];
   return grpc_metadata_batch::Parse(
       sm.key, Slice::FromStaticString(sm.value),
-      (uint32_t)(strlen(sm.key) + strlen(sm.value) + hpack_constants::kEntryOverhead),
+      static_cast<uint32_t>(strlen(sm.key) + strlen(sm.value) +
+                            hpack_constants::kEntryOverhead),
       [](absl::string_view, const Slice&) {
         abort();  // not expecting to see this
       });
