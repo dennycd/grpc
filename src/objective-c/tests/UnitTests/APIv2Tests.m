@@ -49,8 +49,7 @@ static const NSTimeInterval kTestTimeout = 8;
 static const NSTimeInterval kInvertedTimeout = 2;
 
 static NSString *getHostAddress() {
-  return [NSProcessInfo processInfo].environment[@"HOST_PORT_LOCAL"] ?:
-    kHostAddress;
+  return [NSProcessInfo processInfo].environment[@"HOST_PORT_LOCAL"] ?: kHostAddress;
 }
 
 // Reveal the _class ivar for testing access
@@ -143,7 +142,6 @@ static NSString *getHostAddress() {
 @implementation CallAPIv2Tests
 
 - (void)setUp {
-
   NSLog(@"Local interop at %@", getHostAddress());
 
   // This method isn't implemented by the remote server.
