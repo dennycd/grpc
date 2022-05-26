@@ -17,8 +17,8 @@
  */
 
 #import <GRPCClient/GRPCCall+Tests.h>
-#import <GRPCClient/internal_testing/GRPCCall+InternalTests.h>
 #import <GRPCClient/GRPCCall.h>
+#import <GRPCClient/internal_testing/GRPCCall+InternalTests.h>
 
 #import "../Common/GRPCBlockCallbackResponseHandler.h"
 
@@ -43,7 +43,6 @@ static NSString *const kRemoteSSLHost = NSStringize(HOST_PORT_REMOTE);
 static int32_t kRemoteInteropServerOverhead = 12;
 
 static const NSTimeInterval kTestTimeout = 8;
-
 
 /** Tests in InteropTests.m, sending the RPCs to a remote SSL server. */
 @interface InteropTestsRemote : InteropTests
@@ -85,11 +84,10 @@ static const NSTimeInterval kTestTimeout = 8;
   RMTSimpleRequest *request = [RMTSimpleRequest message];
   request.fillUsername = YES;
   request.fillOauthScope = YES;
-    
-GRPCProtoMethod *kUnaryCallMethod = [[GRPCProtoMethod alloc] initWithPackage:kPackage
-                                                        service:kService
-                                                         method:@"UnaryCall"];
-    
+
+  GRPCProtoMethod *kUnaryCallMethod = [[GRPCProtoMethod alloc] initWithPackage:kPackage
+                                                                       service:kService
+                                                                        method:@"UnaryCall"];
 
   GRPCRequestOptions *callRequest =
       [[GRPCRequestOptions alloc] initWithHost:[[self class] host]
@@ -99,7 +97,7 @@ GRPCProtoMethod *kUnaryCallMethod = [[GRPCProtoMethod alloc] initWithPackage:kPa
   __block NSDictionary *trailing_md;
   GRPCMutableCallOptions *options = [[GRPCMutableCallOptions alloc] init];
   options.oauth2AccessToken = @"bogusToken";
-    
+
   GRPCCall2 *call = [[GRPCCall2 alloc]
       initWithRequestOptions:callRequest
              responseHandler:[[GRPCBlockCallbackResponseHandler alloc]

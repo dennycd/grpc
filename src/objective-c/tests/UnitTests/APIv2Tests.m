@@ -24,8 +24,8 @@
 #include <grpc/grpc.h>
 #include <grpc/support/port_platform.h>
 
-#import "../Common/TestUtils.h"
 #import "../Common/GRPCBlockCallbackResponseHandler.h"
+#import "../Common/TestUtils.h"
 #import "../version.h"
 
 // Package and service name of test server
@@ -269,7 +269,8 @@ static const NSTimeInterval kInvertedTimeout = 2;
   NSDate *startTime = [NSDate date];
   GRPCCall2 *call = [[GRPCCall2 alloc]
       initWithRequestOptions:requestOptions
-             responseHandler:[[GRPCBlockCallbackResponseHandler alloc] initWithInitialMetadataCallback:nil
+             responseHandler:[[GRPCBlockCallbackResponseHandler alloc]
+                                 initWithInitialMetadataCallback:nil
                                  messageCallback:^(NSData *data) {
                                    XCTFail(@"Received message. Should not reach here.");
                                  }
@@ -316,7 +317,8 @@ static const NSTimeInterval kInvertedTimeout = 2;
   options.compressionAlgorithm = GRPCCompressGzip;
   GRPCCall2 *call = [[GRPCCall2 alloc]
       initWithRequestOptions:requestOptions
-             responseHandler:[[GRPCBlockCallbackResponseHandler alloc] initWithInitialMetadataCallback:nil
+             responseHandler:[[GRPCBlockCallbackResponseHandler alloc]
+                                 initWithInitialMetadataCallback:nil
                                  messageCallback:^(NSData *data) {
                                    NSError *error;
                                    RMTSimpleResponse *response =
@@ -400,7 +402,8 @@ static const NSTimeInterval kInvertedTimeout = 2;
   __block int unblocked = NO;
   GRPCCall2 *call = [[GRPCCall2 alloc]
       initWithRequestOptions:callRequest
-             responseHandler:[[GRPCBlockCallbackResponseHandler alloc] initWithInitialMetadataCallback:nil
+             responseHandler:[[GRPCBlockCallbackResponseHandler alloc]
+                                 initWithInitialMetadataCallback:nil
                                  messageCallback:^(NSData *message) {
                                    if (!unblocked) {
                                      [expectBlockedMessage fulfill];
@@ -459,22 +462,23 @@ static const NSTimeInterval kInvertedTimeout = 2;
   options.transportType = GRPCTransportTypeInsecure;
   options.flowControlEnabled = YES;
   __block NSUInteger messageId = 0;
-  __block GRPCCall2 *call = [[GRPCCall2 alloc]
-      initWithRequestOptions:callRequest
-             responseHandler:[[GRPCBlockCallbackResponseHandler alloc] initWithInitialMetadataCallback:nil
-                                 messageCallback:^(NSData *message) {
-                                   if (messageId <= 1) {
-                                     [expectPassedMessage fulfill];
-                                   } else {
-                                     [expectBlockedMessage fulfill];
-                                   }
-                                   messageId++;
-                                 }
-                                 closeCallback:nil
-                                 writeDataCallback:^{
-                                   [expectWriteTwice fulfill];
-                                 }]
-                 callOptions:options];
+  __block GRPCCall2 *call =
+      [[GRPCCall2 alloc] initWithRequestOptions:callRequest
+                                responseHandler:[[GRPCBlockCallbackResponseHandler alloc]
+                                                    initWithInitialMetadataCallback:nil
+                                                    messageCallback:^(NSData *message) {
+                                                      if (messageId <= 1) {
+                                                        [expectPassedMessage fulfill];
+                                                      } else {
+                                                        [expectBlockedMessage fulfill];
+                                                      }
+                                                      messageId++;
+                                                    }
+                                                    closeCallback:nil
+                                                    writeDataCallback:^{
+                                                      [expectWriteTwice fulfill];
+                                                    }]
+                                    callOptions:options];
 
   [call receiveNextMessages:2];
   [call start];
@@ -504,7 +508,8 @@ static const NSTimeInterval kInvertedTimeout = 2;
   __block BOOL closed = NO;
   GRPCCall2 *call = [[GRPCCall2 alloc]
       initWithRequestOptions:callRequest
-             responseHandler:[[GRPCBlockCallbackResponseHandler alloc] initWithInitialMetadataCallback:nil
+             responseHandler:[[GRPCBlockCallbackResponseHandler alloc]
+                                 initWithInitialMetadataCallback:nil
                                  messageCallback:^(NSData *message) {
                                    [expectPassedMessage fulfill];
                                    XCTAssertFalse(closed);
@@ -545,7 +550,8 @@ static const NSTimeInterval kInvertedTimeout = 2;
   __block BOOL closed = NO;
   GRPCCall2 *call = [[GRPCCall2 alloc]
       initWithRequestOptions:callRequest
-             responseHandler:[[GRPCBlockCallbackResponseHandler alloc] initWithInitialMetadataCallback:nil
+             responseHandler:[[GRPCBlockCallbackResponseHandler alloc]
+                                 initWithInitialMetadataCallback:nil
                                  messageCallback:^(NSData *message) {
                                    [expectPassedMessage fulfill];
                                    XCTAssertFalse(closed);
@@ -585,7 +591,8 @@ static const NSTimeInterval kInvertedTimeout = 2;
 
   GRPCCall2 *call = [[GRPCCall2 alloc]
       initWithRequestOptions:requestOptions
-             responseHandler:[[GRPCBlockCallbackResponseHandler alloc] initWithInitialMetadataCallback:nil
+             responseHandler:[[GRPCBlockCallbackResponseHandler alloc]
+                                 initWithInitialMetadataCallback:nil
                                  messageCallback:^(NSData *data) {
                                    XCTFail(@"Received unexpected message");
                                  }
