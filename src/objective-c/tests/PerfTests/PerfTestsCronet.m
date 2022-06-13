@@ -22,14 +22,9 @@
 #import <Cronet/Cronet.h>
 #import <GRPCClient/GRPCCall+Cronet.h>
 
+#import "../Common/TestUtils.h"
 #import "../ConfigureCronet.h"
 #import "PerfTests.h"
-
-// The server address is derived from preprocessor macro, which is
-// in turn derived from environment variable of the same name.
-#define NSStringize_helper(x) #x
-#define NSStringize(x) @NSStringize_helper(x)
-static NSString *const kLocalSSLHost = NSStringize(HOST_PORT_LOCALSSL);
 
 // The Protocol Buffers encoding overhead of remote interop server. Acquired
 // by experiment. Adjust this when server's proto file changes.
@@ -44,12 +39,13 @@ static int32_t kRemoteInteropServerOverhead = 12;
 + (void)setUp {
   configureCronet(/*enable_netlog=*/false);
   [GRPCCall useCronetWithEngine:[Cronet getGlobalEngine]];
+  GRPCPrintInteropTestServerDebugInfo();
 
   [super setUp];
 }
 
 + (NSString *)host {
-  return kLocalSSLHost;
+  return GRPCGetLocalInteropTestServerAddressSSL();
 }
 
 + (GRPCTransportID)transport {

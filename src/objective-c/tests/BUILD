@@ -73,6 +73,7 @@ grpc_objc_testing_library(
         "HOST_PORT_LOCALSSL=localhost:5051",
         "HOST_PORT_LOCAL=localhost:5050",
         "HOST_PORT_REMOTE=grpc-test.sandbox.googleapis.com",
+        "",
     ],
 )
 
@@ -220,6 +221,21 @@ macos_unit_test(
         ":NSErrorUnitTests-lib",
         ":RxLibraryUnitTests-lib",
     ],
+)
+
+
+grpc_objc_testing_library(
+    name = "PerfTests-lib",
+    srcs = glob([
+        "PerfTests/**/*.m",
+    ]),
+)
+
+grpc_objc_ios_unit_test(
+    "PerfTests",
+    deps = [
+        ":PerfTests-lib",
+    ]
 )
 
 # bazel run tvos_unit_test is not yet supported by xctestrunner

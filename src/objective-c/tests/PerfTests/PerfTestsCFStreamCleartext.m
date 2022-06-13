@@ -20,13 +20,8 @@
 #import <GRPCClient/GRPCTransport.h>
 #import <GRPCClient/internal_testing/GRPCCall+InternalTests.h>
 
+#import "../Common/TestUtils.h"
 #import "PerfTests.h"
-
-// The server address is derived from preprocessor macro, which is
-// in turn derived from environment variable of the same name.
-#define NSStringize_helper(x) #x
-#define NSStringize(x) @NSStringize_helper(x)
-static NSString *const kLocalCleartextHost = NSStringize(HOST_PORT_LOCAL);
 
 extern const char *kCFStreamVarName;
 
@@ -41,7 +36,7 @@ static int32_t kLocalInteropServerOverhead = 10;
 @implementation PerfTestsCFStreamCleartext
 
 + (NSString *)host {
-  return kLocalCleartextHost;
+  return GRPCGetLocalInteropTestServerAddressPlainText();
 }
 
 + (NSString *)PEMRootCertificates {
@@ -57,6 +52,7 @@ static int32_t kLocalInteropServerOverhead = 10;
 }
 
 + (void)setUp {
+  GRPCPrintInteropTestServerDebugInfo();
   setenv(kCFStreamVarName, "1", 1);
 }
 
@@ -64,7 +60,7 @@ static int32_t kLocalInteropServerOverhead = 10;
   [super setUp];
 
   // Register test server as non-SSL.
-  [GRPCCall useInsecureConnectionsForHost:kLocalCleartextHost];
+  [GRPCCall useInsecureConnectionsForHost:GRPCGetLocalInteropTestServerAddressPlainText()];
 }
 
 + (GRPCTransportID)transport {
