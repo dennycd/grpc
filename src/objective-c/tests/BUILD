@@ -223,7 +223,6 @@ macos_unit_test(
     ],
 )
 
-
 grpc_objc_testing_library(
     name = "PerfTests-lib",
     srcs = glob([
@@ -235,7 +234,7 @@ grpc_objc_ios_unit_test(
     "PerfTests",
     deps = [
         ":PerfTests-lib",
-    ]
+    ],
 )
 
 # bazel run tvos_unit_test is not yet supported by xctestrunner
