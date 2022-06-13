@@ -20,12 +20,8 @@
 #import <GRPCClient/GRPCTransport.h>
 #import <GRPCClient/internal_testing/GRPCCall+InternalTests.h>
 
+#import "../Common/TestUtils.h"
 #import "PerfTests.h"
-// The server address is derived from preprocessor macro, which is
-// in turn derived from environment variable of the same name.
-#define NSStringize_helper(x) #x
-#define NSStringize(x) @NSStringize_helper(x)
-static NSString *const kLocalSSLHost = NSStringize(HOST_PORT_LOCALSSL);
 
 extern const char *kCFStreamVarName;
 
@@ -40,7 +36,7 @@ static int32_t kLocalInteropServerOverhead = 10;
 @implementation PerfTestsCFStreamSSL
 
 + (NSString *)host {
-  return kLocalSSLHost;
+  return GRPCGetLocalInteropTestServerAddressSSL();
 }
 
 + (NSString *)PEMRootCertificates {
@@ -64,6 +60,7 @@ static int32_t kLocalInteropServerOverhead = 10;
 }
 
 + (void)setUp {
+  GRPCPrintInteropTestServerDebugInfo();
   setenv(kCFStreamVarName, "1", 1);
 }
 
@@ -74,7 +71,9 @@ static int32_t kLocalInteropServerOverhead = 10;
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
   NSString *certsPath = [bundle pathForResource:@"TestCertificates.bundle/test-certificates"
                                          ofType:@"pem"];
-  [GRPCCall useTestCertsPath:certsPath testName:@"foo.test.google.fr" forHost:kLocalSSLHost];
+  [GRPCCall useTestCertsPath:certsPath
+                    testName:@"foo.test.google.fr"
+                     forHost:GRPCGetLocalInteropTestServerAddressSSL()];
 }
 
 @end

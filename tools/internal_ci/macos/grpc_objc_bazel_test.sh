@@ -84,6 +84,25 @@ INTEROP_SERVER_BINARY=bazel-bin/test/cpp/interop/interop_server
 trap 'echo "KILLING interop_server binaries running on the background"; kill -9 $(jobs -p)' EXIT
 # === END SECTION: run interop_server on the background ====
 
+# === BEGIN SECTION: Create loopback aliases for iOS performance tests ===
+for ((i=2;i<11;i++))
+do
+    sudo ifconfig lo0 alias 127.0.0.$i up
+done
+
+function finish {
+    for ((i=2;i<11;i++))
+    do
+        sudo ifconfig lo0 -alias 127.0.0.$i
+    done
+    kill -9 `jobs -p`
+    echo "EXIT TIME:  $(date)"
+}
+trap finish EXIT
+
+set -o pipefail  # preserve xcodebuild exit code when piping output
+# === END SECTION: Create loopback aliases for iOS performance tests ===
+
 python3 tools/run_tests/python_utils/bazel_report_helper.py --report_path objc_bazel_tests
 
 # NOTE: When using bazel to run the tests, test env variables like GRPC_VERBOSITY or GRPC_TRACE
