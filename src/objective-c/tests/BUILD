@@ -211,10 +211,8 @@ grpc_objc_ios_unit_test(
     ],
 )
 
-ios_unit_test(
+grpc_objc_ios_unit_test(
     name = "InteropTestsRemote",
-    minimum_os_version = "9.0",
-    test_host = ":ios-host",
     deps = [
         ":InteropTestsRemote-lib",
     ],
